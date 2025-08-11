@@ -8,7 +8,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool isPasswordObscure = true;
+  final _formGlobalKey = GlobalKey<FormState>();
+  bool _isPasswordObscure = true;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +27,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             SizedBox(height: 20),
             Form(
+              key: _formGlobalKey,
               child: Column(
                 children: [
                   TextFormField(
@@ -35,6 +37,13 @@ class _LoginPageState extends State<LoginPage> {
                       border: OutlineInputBorder(),
                       labelText: 'Username',
                     ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Username required";
+                      }
+
+                      return null;
+                    },
                   ),
                   SizedBox(height: 20),
                   TextFormField(
@@ -44,11 +53,11 @@ class _LoginPageState extends State<LoginPage> {
                       suffixIcon: IconButton(
                         onPressed: () {
                           setState(() {
-                            isPasswordObscure = !isPasswordObscure;
+                            _isPasswordObscure = !_isPasswordObscure;
                           });
                         },
                         icon: Icon(
-                          isPasswordObscure
+                          _isPasswordObscure
                               ? Icons.visibility_off
                               : Icons.remove_red_eye,
                         ),
@@ -56,11 +65,22 @@ class _LoginPageState extends State<LoginPage> {
                       border: OutlineInputBorder(),
                       labelText: 'Password',
                     ),
-                    obscureText: isPasswordObscure,
+                    obscureText: _isPasswordObscure,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Password required";
+                      }
+
+                      return null;
+                    },
                   ),
                   SizedBox(height: 30),
                   FilledButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      if(_formGlobalKey.currentState!.validate()){
+                        
+                      }
+                    },
                     child: Text("Login"),
                     style: FilledButton.styleFrom(
                       minimumSize: Size.fromHeight(50),
