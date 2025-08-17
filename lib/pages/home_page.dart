@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mitra_cempaka/pages/setting_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,7 +13,7 @@ class _HomePageState extends State<HomePage> {
     Center(child: Text('Cashier Page')),
     Center(child: Text('History Page')),
     Center(child: Text('Data Page')),
-    Center(child: Text('Setting Page')),
+    SettingPage(),
   ];
   int _currentIndex = 0;
 
