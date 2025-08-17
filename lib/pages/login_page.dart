@@ -16,6 +16,7 @@ class _LoginPageState extends State<LoginPage> {
   String _password = '';
 
   bool _isPasswordObscure = true;
+  bool _isLoading = false;
 
   String _error = '';
 
@@ -95,9 +96,15 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   SizedBox(height: 30),
                   FilledButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formGlobalKey.currentState!.validate()) {
                         _formGlobalKey.currentState!.save();
+
+                        setState(() {
+                          _isLoading = true;
+                        });
+
+                        await Future.delayed(Duration(seconds: 3));
                         if (_username == 'admin' && _password == 'admin') {
                           setState(() {
                             _error = "";
@@ -113,14 +120,27 @@ class _LoginPageState extends State<LoginPage> {
                           });
                         }
                       }
+
+                      setState(() {
+                        _isLoading = false;
+                      });
                     },
-                    child: Text("Login"),
                     style: FilledButton.styleFrom(
                       minimumSize: Size.fromHeight(50),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(4),
                       ),
                     ),
+                    child: _isLoading
+                        ? Container(
+                            width: 24,
+                            height: 24,
+                            child: const CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2,
+                            ),
+                          )
+                        : Text("Login"),
                   ),
                 ],
               ),
