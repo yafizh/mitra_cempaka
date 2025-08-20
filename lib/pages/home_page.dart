@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mitra_cempaka/pages/cashier_page.dart';
 import 'package:mitra_cempaka/pages/setting_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -10,7 +11,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _pages = [
-    Center(child: Text('Cashier Page')),
+    CashierPage(),
     Center(child: Text('History Page')),
     Center(child: Text('Data Page')),
     SettingPage(),

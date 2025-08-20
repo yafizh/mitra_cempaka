@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mitra_cempaka/pages/login_page.dart';
 import 'package:mitra_cempaka/pages/splashscreen.dart';
 
 void main() {
