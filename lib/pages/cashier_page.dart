@@ -19,69 +19,77 @@ class CashierPage extends StatelessWidget {
 
     return ChangeNotifierProvider(
       create: (context) => CartModel(),
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text("Cashier", style: TextStyle(fontWeight: FontWeight.bold)),
-          centerTitle: true,
-          actions: [
-            IconButton(
-              onPressed: () {
-                // Navigator.of(
-                //   context,
-                // ).push(MaterialPageRoute(builder: (context) => const CartPage()));
-              },
-              icon: Icon(Icons.shopping_cart_outlined),
+      child: Consumer<CartModel>(
+        builder: (context, cart, child) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(
+                "Cashier",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              centerTitle: true,
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    // Navigator.of(
+                    //   context,
+                    // ).push(MaterialPageRoute(builder: (context) => const CartPage()));
+                  },
+                  icon: Badge.count(
+                    count: cart.totalDrug,
+                    child: Icon(Icons.shopping_cart_outlined),
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: TextField(
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  contentPadding: const EdgeInsets.all(15),
-                  hintText: 'Search Item',
-                  hintStyle: const TextStyle(color: Colors.grey, fontSize: 14),
-                  suffixIcon: SizedBox(
-                    width: 100,
-                    child: IntrinsicHeight(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          const VerticalDivider(
-                            color: Colors.black,
-                            indent: 10,
-                            endIndent: 10,
-                            thickness: 0.4,
+            body: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      contentPadding: const EdgeInsets.all(15),
+                      hintText: 'Search Item',
+                      hintStyle: const TextStyle(
+                        color: Colors.grey,
+                        fontSize: 14,
+                      ),
+                      suffixIcon: SizedBox(
+                        width: 100,
+                        child: IntrinsicHeight(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              const VerticalDivider(
+                                color: Colors.black,
+                                indent: 10,
+                                endIndent: 10,
+                                thickness: 0.4,
+                              ),
+                              IconButton(
+                                onPressed: () {},
+                                icon: Icon(Icons.search),
+                              ),
+                            ],
                           ),
-                          IconButton(
-                            onPressed: () {},
-                            icon: Icon(Icons.search),
-                          ),
-                        ],
+                        ),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
                       ),
                     ),
                   ),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
                 ),
-              ),
-            ),
-            SizedBox(height: 16),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: ListView.builder(
-                  itemCount: drugs.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    return Consumer<CartModel>(
-                      builder: (context, cart, child) {
+                SizedBox(height: 16),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: ListView.builder(
+                      itemCount: drugs.length,
+                      itemBuilder: (BuildContext context, int index) {
                         return Card(
-                          margin: EdgeInsets.all(0),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0),
                           ),
@@ -109,13 +117,13 @@ class CashierPage extends StatelessWidget {
                           ),
                         );
                       },
-                    );
-                  },
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
