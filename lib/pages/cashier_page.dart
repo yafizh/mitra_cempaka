@@ -1,22 +1,60 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mitra_cempaka/models/cart_model.dart';
 import 'package:mitra_cempaka/models/drug.dart';
 import 'package:provider/provider.dart';
 
-class CashierPage extends StatelessWidget {
+class CashierPage extends StatefulWidget {
   CashierPage({super.key});
 
+  @override
+  State<CashierPage> createState() => _CashierPageState();
+}
+
+class _CashierPageState extends State<CashierPage> {
   List<Drug> drugs = [];
 
+  ScrollController _scrollController = new ScrollController();
+
+  int _page = 1;
+
+  int _totalPage = 3;
+
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
+
     for (int i = 1; i <= 20; i++) {
       drugs.add(Drug("Obat $i", Random().nextInt(100) + 10000));
     }
 
+    _scrollController.addListener(() async {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        if (_page < _totalPage) {
+          _page += 1;
+          await Future.delayed(Duration(seconds: 3));
+          final temp = [];
+          for (int i = drugs.length + 1; i <= (20 * _page); i++) {
+            temp.add(Drug("Obat $i", Random().nextInt(100) + 10000));
+          }
+          setState(() {
+            drugs = [...drugs, ...temp];
+          });
+        }
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => CartModel(),
       child: Consumer<CartModel>(
@@ -89,8 +127,16 @@ class CashierPage extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
                     child: ListView.builder(
-                      itemCount: drugs.length,
+                      controller: _scrollController,
+                      itemCount: (drugs.length + (_page == _totalPage ? 0 : 1)),
                       itemBuilder: (BuildContext context, int index) {
+                        if (index == drugs.length) {
+                          return Padding(
+                            padding: EdgeInsetsGeometry.symmetric(vertical: 16),
+                            child: Center(child: CircularProgressIndicator()),
+                          );
+                        }
+
                         return Card(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8.0),
@@ -122,6 +168,7 @@ class CashierPage extends StatelessWidget {
                     ),
                   ),
                 ),
+                SizedBox(height: 16),
               ],
             ),
           );
