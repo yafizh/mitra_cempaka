@@ -35,10 +35,12 @@ class CashierPage extends StatelessWidget {
                     //   context,
                     // ).push(MaterialPageRoute(builder: (context) => const CartPage()));
                   },
-                  icon: Badge.count(
-                    count: cart.totalDrug,
-                    child: Icon(Icons.shopping_cart_outlined),
-                  ),
+                  icon: cart.totalDrug == 0
+                      ? Icon(Icons.shopping_cart_outlined)
+                      : Badge.count(
+                          count: cart.totalDrug,
+                          child: Icon(Icons.shopping_cart_outlined),
+                        ),
                 ),
               ],
             ),
