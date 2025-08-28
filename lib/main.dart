@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:mitra_cempaka/models/cart_model.dart';
 import 'package:mitra_cempaka/pages/splashscreen.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => CartModel(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
