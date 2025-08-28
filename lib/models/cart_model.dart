@@ -6,7 +6,7 @@ import 'package:mitra_cempaka/models/drug.dart';
 class CartModel extends ChangeNotifier {
   final List<Drug> _drugs = [];
 
-  UnmodifiableListView<Drug> get items => UnmodifiableListView(_drugs);
+  UnmodifiableListView<Drug> get drugs => UnmodifiableListView(_drugs);
 
   int get totalDrug => _drugs.length;
   int get totalDrugPrice => _drugs.fold(0, (sum, drug) => sum + drug.price);
