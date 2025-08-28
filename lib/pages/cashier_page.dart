@@ -122,7 +122,6 @@ class _CashierPageState extends State<CashierPage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 16),
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -168,7 +167,6 @@ class _CashierPageState extends State<CashierPage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 16),
               ],
             ),
           );
