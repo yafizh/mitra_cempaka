@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:mitra_cempaka/models/cart_model.dart';
 import 'package:mitra_cempaka/pages/splashscreen.dart';
+import 'package:mitra_cempaka/services/provider/cart_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() {
   runApp(
     ChangeNotifierProvider(
-      create: (context) => CartModel(),
+      create: (context) => CartProvider(),
       child: const MyApp(),
     ),
   );

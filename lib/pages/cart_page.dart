@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mitra_cempaka/models/cart_model.dart';
+import 'package:mitra_cempaka/services/provider/cart_provider.dart';
 import 'package:provider/provider.dart';
 
 class CartPage extends StatelessWidget {
@@ -13,9 +13,9 @@ class CartPage extends StatelessWidget {
         title: Text("Cart", style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
       ),
-      body: Consumer<CartModel>(
+      body: Consumer<CartProvider>(
         builder: (context, cart, child) {
-          return cart.totalDrug == 0
+          return cart.totalItem == 0
               ? Center(child: Text("Cart is empty"))
               : Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -26,14 +26,23 @@ class CartPage extends StatelessWidget {
                       Expanded(
                         child: ListView.builder(
                           shrinkWrap: true,
-                          itemCount: cart.drugs.length,
+                          itemCount: cart.carts.length,
                           itemBuilder: (BuildContext context, int index) {
-                            final drug = cart.drugs[index];
+                            final drug = cart.carts[index].drug;
+                            final controllerQuantity = TextEditingController(
+                              text: cart.carts[index].quantity.toString(),
+                            );
+
                             return Dismissible(
                               key: Key(drug.name),
                               direction: DismissDirection.endToStart,
                               onDismissed: (direction) {
                                 cart.remove(drug);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('${drug.name} removed'),
+                                  ),
+                                );
                               },
                               background: Container(
                                 alignment: Alignment.centerRight,
@@ -67,12 +76,13 @@ class CartPage extends StatelessWidget {
                                     children: [
                                       IconButton(
                                         visualDensity: VisualDensity.compact,
-                                        onPressed: () {},
+                                        onPressed: () =>
+                                            cart.minQuantity(index),
                                         icon: Icon(Icons.remove),
                                       ),
                                       SizedBox(
                                         width: 40,
-                                        child: TextField(
+                                        child: TextFormField(
                                           keyboardType: TextInputType.number,
                                           textAlign: TextAlign.center,
                                           decoration: InputDecoration(
@@ -80,11 +90,22 @@ class CartPage extends StatelessWidget {
                                             isDense: true,
                                             contentPadding: EdgeInsets.all(0),
                                           ),
+                                          controller: controllerQuantity,
+                                          onChanged: (value) {
+                                            if (value.isNotEmpty) {
+                                              cart.setQuantity(
+                                                index,
+                                                int.parse(value),
+                                              );
+                                            }
+                                          },
                                         ),
                                       ),
                                       IconButton(
                                         visualDensity: VisualDensity.compact,
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          cart.addQuantity(index);
+                                        },
                                         icon: Icon(Icons.add),
                                       ),
                                     ],
@@ -96,7 +117,7 @@ class CartPage extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding: EdgeInsetsGeometry.only(bottom: 24.0),
+                        padding: EdgeInsets.only(bottom: 24.0),
                         child: FilledButton(
                           onPressed: () {},
                           style: FilledButton.styleFrom(

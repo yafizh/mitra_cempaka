@@ -1,9 +1,9 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:mitra_cempaka/models/cart_model.dart';
 import 'package:mitra_cempaka/models/drug.dart';
 import 'package:mitra_cempaka/pages/cart_page.dart';
+import 'package:mitra_cempaka/services/provider/cart_provider.dart';
 import 'package:provider/provider.dart';
 
 class CashierPage extends StatefulWidget {
@@ -56,7 +56,7 @@ class _CashierPageState extends State<CashierPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<CartModel>(
+    return Consumer<CartProvider>(
       builder: (context, cart, child) {
         return Scaffold(
           appBar: AppBar(
@@ -72,10 +72,10 @@ class _CashierPageState extends State<CashierPage> {
                     MaterialPageRoute(builder: (context) => const CartPage()),
                   );
                 },
-                icon: cart.totalDrug == 0
+                icon: cart.totalItem == 0
                     ? Icon(Icons.shopping_cart_outlined)
                     : Badge.count(
-                        count: cart.totalDrug,
+                        count: cart.totalItem,
                         child: Icon(Icons.shopping_cart_outlined),
                       ),
               ),
