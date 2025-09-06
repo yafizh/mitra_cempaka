@@ -18,13 +18,13 @@ class CartPage extends StatelessWidget {
         builder: (context, cart, child) {
           return cart.totalItem == 0
               ? Center(child: Text("Cart is empty"))
-              : Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
+              : Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: ListView.builder(
                           shrinkWrap: true,
                           itemCount: cart.carts.length,
@@ -59,9 +59,8 @@ class CartPage extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(8.0),
                                 ),
                                 child: ListTile(
-                                  contentPadding: EdgeInsets.only(
-                                    left: 8,
-                                    right: 8,
+                                  contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 8,
                                   ),
                                   title: Text(cart.drugs[index].name),
                                   subtitle: Text(
@@ -117,27 +116,33 @@ class CartPage extends StatelessWidget {
                           },
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 24.0),
-                        child: FilledButton(
-                          onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => const CheckoutPage(),
-                              ),
-                            );
-                          },
-                          style: FilledButton.styleFrom(
-                            minimumSize: Size.fromHeight(48),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          child: const Text("Checkout"),
-                        ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(color: Colors.white),
+                      padding: EdgeInsets.only(
+                        left: 8,
+                        right: 8,
+                        top: 16,
+                        bottom: 24,
                       ),
-                    ],
-                  ),
+                      child: FilledButton(
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const CheckoutPage(),
+                            ),
+                          );
+                        },
+                        style: FilledButton.styleFrom(
+                          minimumSize: Size.fromHeight(48),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        child: const Text("Checkout"),
+                      ),
+                    ),
+                  ],
                 );
         },
       ),
