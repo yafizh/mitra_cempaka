@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mitra_cempaka/pages/checkout_page.dart';
 import 'package:mitra_cempaka/services/provider/cart_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -119,7 +120,13 @@ class CartPage extends StatelessWidget {
                       Padding(
                         padding: EdgeInsets.only(bottom: 24.0),
                         child: FilledButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => const CheckoutPage(),
+                              ),
+                            );
+                          },
                           style: FilledButton.styleFrom(
                             minimumSize: Size.fromHeight(48),
                             shape: RoundedRectangleBorder(
