@@ -21,8 +21,6 @@ class CheckoutPage extends StatelessWidget {
             children: [
               Expanded(
                 child: ListView.builder(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
                   itemCount: cart.carts.length,
                   itemBuilder: (BuildContext context, int index) {
                     final drug = cart.carts[index].drug;
@@ -99,6 +97,7 @@ class CheckoutPage extends StatelessWidget {
                       onPressed: () {
                         Navigator.of(context).pop();
                         Navigator.of(context).pop();
+                        cart.removeAll();
                       },
                       style: FilledButton.styleFrom(
                         minimumSize: Size.fromHeight(48),
