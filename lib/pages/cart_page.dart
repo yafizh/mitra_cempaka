@@ -9,11 +9,16 @@ class CartPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Cart", style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
+        backgroundColor: theme.colorScheme.primary,
+        foregroundColor: theme.colorScheme.onPrimary,
       ),
+      backgroundColor: Colors.grey[50],
       body: Consumer<CartProvider>(
         builder: (context, cart, child) {
           return cart.totalItem == 0
@@ -24,25 +29,21 @@ class CartPage extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        padding: const EdgeInsets.all(8.0),
                         child: ListView.builder(
-                          shrinkWrap: true,
                           itemCount: cart.carts.length,
                           itemBuilder: (BuildContext context, int index) {
                             final drug = cart.carts[index].drug;
                             final controllerQuantity = TextEditingController(
                               text: cart.carts[index].quantity.toString(),
                             );
-
                             return Dismissible(
                               key: Key(drug.name),
                               direction: DismissDirection.endToStart,
                               onDismissed: (direction) {
                                 cart.remove(drug);
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text('${drug.name} removed'),
-                                  ),
+                                  SnackBar(content: Text('${drug.name} removed')),
                                 );
                               },
                               background: Container(
@@ -54,14 +55,12 @@ class CartPage extends StatelessWidget {
                                   style: TextStyle(color: Colors.white),
                                 ),
                               ),
-                              child: Card(
+                              child: Card.filled(
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8.0),
+                                  borderRadius: BorderRadius.circular(12.0),
                                 ),
+                                color: Colors.white,
                                 child: ListTile(
-                                  contentPadding: EdgeInsets.symmetric(
-                                    horizontal: 8,
-                                  ),
                                   title: Text(cart.drugs[index].name),
                                   subtitle: Text(
                                     NumberFormat.currency(
@@ -72,12 +71,10 @@ class CartPage extends StatelessWidget {
                                   ),
                                   trailing: Row(
                                     mainAxisSize: MainAxisSize.min,
-                                    spacing: 8.0,
                                     children: [
                                       IconButton(
                                         visualDensity: VisualDensity.compact,
-                                        onPressed: () =>
-                                            cart.minQuantity(index),
+                                        onPressed: () => cart.minQuantity(index),
                                         icon: Icon(Icons.remove),
                                       ),
                                       SizedBox(
@@ -119,11 +116,9 @@ class CartPage extends StatelessWidget {
                     ),
                     Container(
                       decoration: BoxDecoration(color: Colors.white),
-                      padding: EdgeInsets.only(
-                        left: 8,
-                        right: 8,
-                        top: 16,
-                        bottom: 24,
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 24,
                       ),
                       child: FilledButton(
                         onPressed: () {
@@ -138,6 +133,7 @@ class CartPage extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
+                          backgroundColor: theme.colorScheme.primary,
                         ),
                         child: const Text("Checkout"),
                       ),

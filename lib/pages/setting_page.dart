@@ -7,14 +7,15 @@ class SettingPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          "Profile",
-          style: TextStyle(fontWeight: FontWeight.bold,),
-        ),
+        title: Text("Profile", style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
+        backgroundColor: theme.colorScheme.primary,
+        foregroundColor: Colors.white,
       ),
+      backgroundColor: Colors.grey[50],
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -25,20 +26,17 @@ class SettingPage extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 30),
               child: Column(
                 children: [
-                  Icon(Icons.account_circle, size: 140,),
+                  Icon(Icons.account_circle, size: 140),
                   SizedBox(height: 20),
                   Text(
                     'Nursahid Arya Suyudi',
-                    style: TextStyle(
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
             ),
             SizedBox(height: 8),
-            FilledButton(
+            FilledButton.tonal(
               onPressed: () {
                 //
               },
@@ -49,6 +47,9 @@ class SettingPage extends StatelessWidget {
                 ),
                 alignment: AlignmentDirectional.centerStart,
                 padding: EdgeInsets.only(left: 16, right: 8),
+                backgroundColor: theme.colorScheme.primary.withValues(
+                  alpha: 0.2,
+                ),
               ),
               child: Row(
                 children: [
@@ -60,7 +61,7 @@ class SettingPage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 8),
-            FilledButton(
+            FilledButton.tonal(
               onPressed: () {
                 AuthPreferences.setLoggedIn(false);
                 Navigator.pushReplacement(
@@ -75,6 +76,9 @@ class SettingPage extends StatelessWidget {
                 ),
                 alignment: AlignmentDirectional.centerStart,
                 padding: EdgeInsets.only(left: 16, right: 8),
+                backgroundColor: theme.colorScheme.primary.withValues(
+                  alpha: 0.2,
+                ),
               ),
               child: Row(
                 children: [

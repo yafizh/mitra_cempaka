@@ -56,21 +56,28 @@ class _HistoryPageState extends State<HistoryPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Consumer<CartProvider>(
       builder: (context, cart, child) {
         return Scaffold(
           appBar: AppBar(
+            backgroundColor: theme.colorScheme.primary,
             title: Text(
               "History",
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: theme.colorScheme.onPrimary,
+              ),
             ),
             centerTitle: true,
           ),
-          body: Column(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          backgroundColor: Colors.grey[50],
+          body: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Expanded(
                   child: ListView.builder(
                     controller: _scrollController,
                     itemCount: (drugs.length + (_page == _totalPage ? 0 : 1)),
@@ -82,10 +89,11 @@ class _HistoryPageState extends State<HistoryPage> {
                         );
                       }
 
-                      return Card(
+                      return Card.filled(
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
+                          borderRadius: BorderRadius.circular(12.0),
                         ),
+                        color: Colors.white,
                         child: ListTile(
                           title: Text("Saturday, 20 April 2025"),
                           subtitle: Text(
@@ -114,8 +122,8 @@ class _HistoryPageState extends State<HistoryPage> {
                     },
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },

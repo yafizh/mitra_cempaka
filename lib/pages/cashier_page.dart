@@ -56,13 +56,19 @@ class _CashierPageState extends State<CashierPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Consumer<CartProvider>(
       builder: (context, cart, child) {
         return Scaffold(
           appBar: AppBar(
+            backgroundColor: theme.colorScheme.primary,
             title: Text(
               "Cashier",
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: theme.colorScheme.onPrimary,
+              ),
             ),
             centerTitle: true,
             actions: [
@@ -72,6 +78,7 @@ class _CashierPageState extends State<CashierPage> {
                     MaterialPageRoute(builder: (context) => const CartPage()),
                   );
                 },
+                color: theme.colorScheme.onPrimary,
                 icon: cart.totalItem == 0
                     ? Icon(Icons.shopping_cart_outlined)
                     : Badge.count(
@@ -81,49 +88,50 @@ class _CashierPageState extends State<CashierPage> {
               ),
             ],
           ),
-          body: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: TextField(
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    contentPadding: const EdgeInsets.all(15),
-                    hintText: 'Search Item',
-                    hintStyle: const TextStyle(
-                      color: Colors.grey,
-                      fontSize: 14,
-                    ),
-                    suffixIcon: SizedBox(
-                      width: 100,
-                      child: IntrinsicHeight(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            const VerticalDivider(
-                              color: Colors.black,
-                              indent: 10,
-                              endIndent: 10,
-                              thickness: 0.4,
-                            ),
-                            IconButton(
-                              onPressed: () {},
-                              icon: Icon(Icons.search),
-                            ),
-                          ],
+          backgroundColor: Colors.grey[50],
+          body: Padding(
+            padding: const EdgeInsets.only(top: 8.0, right: 8.0, left: 8.0),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      contentPadding: const EdgeInsets.all(15),
+                      hintText: 'Search Item',
+                      hintStyle: const TextStyle(
+                        color: Colors.grey,
+                        fontSize: 14,
+                      ),
+                      suffixIcon: SizedBox(
+                        width: 100,
+                        child: IntrinsicHeight(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              const VerticalDivider(
+                                color: Colors.black,
+                                indent: 10,
+                                endIndent: 10,
+                                thickness: 0.4,
+                              ),
+                              IconButton(
+                                onPressed: () {},
+                                icon: Icon(Icons.search),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                Expanded(
                   child: ListView.builder(
                     controller: _scrollController,
                     itemCount: (drugs.length + (_page == _totalPage ? 0 : 1)),
@@ -135,10 +143,11 @@ class _CashierPageState extends State<CashierPage> {
                         );
                       }
 
-                      return Card(
+                      return Card.filled(
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8.0),
+                          borderRadius: BorderRadius.circular(12.0),
                         ),
+                        color: Colors.white,
                         child: ListTile(
                           title: Text(drugs[index].name),
                           subtitle: Text(
@@ -149,6 +158,7 @@ class _CashierPageState extends State<CashierPage> {
                             ).format(drugs[index].price),
                           ),
                           trailing: IconButton(
+                            color: theme.colorScheme.primary,
                             onPressed: () {
                               cart.drugs.contains(drugs[index])
                                   ? cart.remove(drugs[index])
@@ -165,8 +175,8 @@ class _CashierPageState extends State<CashierPage> {
                     },
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },

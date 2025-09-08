@@ -20,9 +20,17 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+        fontFamily: 'Poppins',
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF123359),
+          primary: const Color(0xFF123359),
+          onPrimary: Colors.white,
+          onSecondary: Colors.white,
+        ),
       ),
       home: Splashscreen(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }

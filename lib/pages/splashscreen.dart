@@ -16,7 +16,7 @@ class _SplashscreenState extends State<Splashscreen> {
     final page = (await AuthPreferences.isLoggedIn())
         ? HomePage()
         : LoginPage();
-        
+
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => page),
@@ -31,6 +31,9 @@ class _SplashscreenState extends State<Splashscreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: Text('MITRA CEMPAKA')));
+    return Scaffold(
+      backgroundColor: Colors.grey[50],
+      body: Center(child: Image.asset('images/logo.png')),
+    );
   }
 }

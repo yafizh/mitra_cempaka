@@ -11,35 +11,42 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final _pages = [
-    CashierPage(),
-    HistoryPage(),
-    SettingPage(),
-  ];
+  final _pages = [CashierPage(), HistoryPage(), SettingPage()];
   int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      body: _pages.elementAt(_currentIndex),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_bag),
+      body: _pages[_currentIndex],
+      bottomNavigationBar: NavigationBar(
+        backgroundColor: Colors.white,
+        indicatorColor: theme.primaryColor.withValues(alpha: 0.2),
+        selectedIndex: _currentIndex,
+        onDestinationSelected: (i) => setState(() => _currentIndex = i),
+        destinations: [
+          NavigationDestination(
+            icon: Icon(
+              Icons.point_of_sale,
+              color: _currentIndex == 0 ? theme.primaryColor : Colors.grey[500],
+            ),
             label: 'Cashier',
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.history), label: 'History'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
+          NavigationDestination(
+            icon: Icon(
+              Icons.receipt_long,
+              color: _currentIndex == 1 ? theme.primaryColor : Colors.grey[500],
+            ),
+            label: 'History',
+          ),
+          NavigationDestination(
+            icon: Icon(
+              Icons.person,
+              color: _currentIndex == 2 ? theme.primaryColor : Colors.grey[500],
+            ),
             label: 'Profile',
           ),
         ],
-        currentIndex: _currentIndex,
-        onTap: (value) {
-          setState(() {
-            _currentIndex = value;
-          });
-        },
       ),
     );
   }

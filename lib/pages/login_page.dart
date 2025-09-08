@@ -22,17 +22,34 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
+      backgroundColor: Colors.grey[50],
       body: Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Text(
-              "MITRA CEMPAKA",
+              "Apotek",
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 40,
+                fontWeight: FontWeight.bold,
+                color: Colors.red[400],
+              ),
+            ),
+            SizedBox(height: 16),
+            Image.asset('images/logo.png'),
+            SizedBox(height: 16),
+            Text(
+              "Mitra Cempaka",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 40,
+                fontWeight: FontWeight.bold,
+                color: theme.colorScheme.primary,
+              ),
             ),
             Text(
               _error.isEmpty ? '' : _error,
