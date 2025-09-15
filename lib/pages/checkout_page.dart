@@ -1,14 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:mitra_cempaka/services/provider/cart_provider.dart';
 import 'package:provider/provider.dart';
 
-class CheckoutPage extends StatelessWidget {
+class CheckoutPage extends StatefulWidget {
   const CheckoutPage({super.key});
+
+  @override
+  State<CheckoutPage> createState() => _CheckoutPageState();
+}
+
+class _CheckoutPageState extends State<CheckoutPage> {
+  int _total = 0;
+  int _payment = 0;
+  int _charge = 0;
+
+  bool _isValid = false;
+  bool _isLoading = false;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Checkout", style: TextStyle(fontWeight: FontWeight.bold)),
@@ -19,6 +33,7 @@ class CheckoutPage extends StatelessWidget {
       backgroundColor: Colors.grey[50],
       body: Consumer<CartProvider>(
         builder: (context, cart, child) {
+          _total = cart.totalItemPrice;
           return Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,7 +113,7 @@ class CheckoutPage extends StatelessWidget {
                             locale: 'id_ID',
                             symbol: 'Rp ',
                             decimalDigits: 0,
-                          ).format(cart.totalItemPrice),
+                          ).format(_total),
                         ),
                       ],
                     ),
@@ -115,7 +130,8 @@ class CheckoutPage extends StatelessWidget {
                         ),
                         SizedBox(width: 20),
                         Expanded(
-                          child: TextField(
+                          child: TextFormField(
+                            keyboardType: TextInputType.number,
                             textAlign: TextAlign.end,
                             decoration: InputDecoration(
                               fillColor: Colors.white,
@@ -123,6 +139,19 @@ class CheckoutPage extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(8),
                               ),
                             ),
+                            autofocus: true,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                            onChanged: (value) {
+                              if (value.isNotEmpty) {
+                                setState(() {
+                                  _payment = int.parse(value);
+                                  _charge = _payment - _total;
+                                  _isValid = (_payment >= 0 && _charge >= 0);
+                                });
+                              }
+                            },
                           ),
                         ),
                       ],
@@ -147,25 +176,44 @@ class CheckoutPage extends StatelessWidget {
                             locale: 'id_ID',
                             symbol: 'Rp ',
                             decimalDigits: 0,
-                          ).format(cart.totalItemPrice),
+                          ).format(_charge > 0 ? _charge : 0),
                         ),
                       ],
                     ),
                     SizedBox(height: 16),
                     FilledButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                        Navigator.of(context).pop();
-                        cart.removeAll();
+                      onPressed: () async {
+                        if (_isValid) {
+                          setState(() => _isLoading = true);
+
+                          await Future.delayed(Duration(seconds: 3));
+                          Navigator.of(context).pop();
+                          Navigator.of(context).pop();
+                          cart.removeAll();
+                        }
                       },
                       style: FilledButton.styleFrom(
                         minimumSize: Size.fromHeight(48),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        backgroundColor: theme.colorScheme.primary,
+                        backgroundColor: theme.colorScheme.primary.withValues(
+                          alpha: (!_isValid || _isLoading) ? 0.6 : 1,
+                        ),
+                        splashFactory: (!_isValid || _isLoading)
+                            ? NoSplash.splashFactory
+                            : null,
                       ),
-                      child: const Text("Confirm"),
+                      child: _isLoading
+                          ? SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: const CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                          : const Text("Confirm"),
                     ),
                   ],
                 ),
