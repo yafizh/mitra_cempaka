@@ -85,11 +85,9 @@ class _LoginPageState extends State<LoginPage> {
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.password),
                       suffixIcon: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            _isPasswordObscure = !_isPasswordObscure;
-                          });
-                        },
+                        onPressed: () => setState(
+                          () => _isPasswordObscure = !_isPasswordObscure,
+                        ),
                         icon: Icon(
                           _isPasswordObscure
                               ? Icons.visibility_off
@@ -117,9 +115,7 @@ class _LoginPageState extends State<LoginPage> {
                       if (_formGlobalKey.currentState!.validate()) {
                         _formGlobalKey.currentState!.save();
 
-                        setState(() {
-                          _isLoading = true;
-                        });
+                        setState(() => _isLoading = true);
 
                         await Future.delayed(Duration(seconds: 3));
                         if (_username == 'admin' && _password == 'admin') {
@@ -149,7 +145,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     child: _isLoading
-                        ? Container(
+                        ? SizedBox(
                             width: 24,
                             height: 24,
                             child: const CircularProgressIndicator(
