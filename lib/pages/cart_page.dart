@@ -37,13 +37,17 @@ class CartPage extends StatelessWidget {
                             final controllerQuantity = TextEditingController(
                               text: cart.carts[index].quantity.toString(),
                             );
+                            final discount = cart.carts[index].discount;
+
                             return Dismissible(
                               key: Key(drug.name),
                               direction: DismissDirection.endToStart,
                               onDismissed: (direction) {
                                 cart.remove(drug);
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(content: Text('${drug.name} removed')),
+                                  SnackBar(
+                                    content: Text('${drug.name} removed'),
+                                  ),
                                 );
                               },
                               background: Container(
@@ -62,19 +66,48 @@ class CartPage extends StatelessWidget {
                                 color: Colors.white,
                                 child: ListTile(
                                   title: Text(cart.drugs[index].name),
-                                  subtitle: Text(
-                                    NumberFormat.currency(
-                                      locale: 'id_ID',
-                                      symbol: 'Rp ',
-                                      decimalDigits: 0,
-                                    ).format(cart.drugs[index].price),
-                                  ),
+                                  subtitle: discount == 0
+                                      ? Text(
+                                          NumberFormat.currency(
+                                            locale: 'id_ID',
+                                            symbol: 'Rp ',
+                                            decimalDigits: 0,
+                                          ).format(cart.drugs[index].price),
+                                        )
+                                      : Row(
+                                          children: [
+                                            Text(
+                                              NumberFormat.currency(
+                                                locale: 'id_ID',
+                                                symbol: 'Rp ',
+                                                decimalDigits: 0,
+                                              ).format(
+                                                cart.drugs[index].price -
+                                                    discount,
+                                              ),
+                                            ),
+                                            SizedBox(width: 8.0),
+                                            Text(
+                                              NumberFormat.currency(
+                                                locale: 'id_ID',
+                                                symbol: 'Rp ',
+                                                decimalDigits: 0,
+                                              ).format(cart.drugs[index].price),
+                                              style: TextStyle(
+                                                color: Colors.grey[500],
+                                                decoration:
+                                                    TextDecoration.lineThrough,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
                                   trailing: Row(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       IconButton(
                                         visualDensity: VisualDensity.compact,
-                                        onPressed: () => cart.minQuantity(index),
+                                        onPressed: () =>
+                                            cart.minQuantity(index),
                                         icon: Icon(Icons.remove),
                                       ),
                                       SizedBox(

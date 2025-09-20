@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:mitra_cempaka/models/drug.dart';
 import 'package:mitra_cempaka/pages/cart_page.dart';
@@ -160,9 +161,59 @@ class _CashierPageState extends State<CashierPage> {
                           trailing: IconButton(
                             color: theme.colorScheme.primary,
                             onPressed: () {
-                              cart.drugs.contains(drugs[index])
-                                  ? cart.remove(drugs[index])
-                                  : cart.add(drugs[index]);
+                              if (cart.drugs.contains(drugs[index])) {
+                                cart.remove(drugs[index]);
+                              } else {
+                                int _discount = 0;
+                                showDialog<String>(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
+                                        title: const Text(
+                                          'Add to chart',
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        content: TextFormField(
+                                          keyboardType: TextInputType.number,
+                                          textAlign: TextAlign.end,
+                                          decoration: InputDecoration(
+                                            fillColor: Colors.white,
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                            label: Text("Discount"),
+                                          ),
+                                          initialValue: "0",
+                                          autofocus: true,
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter
+                                                .digitsOnly,
+                                          ],
+                                          onChanged: (value) =>
+                                              _discount = int.parse(value),
+                                        ),
+                                        actionsAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        actions: <Widget>[
+                                          TextButton(
+                                            onPressed: () => Navigator.pop(
+                                              context,
+                                              'Cancel',
+                                            ),
+                                            child: const Text('Cancel'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              cart.add(drugs[index], _discount);
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text('Add'),
+                                          ),
+                                        ],
+                                      ),
+                                );
+                              }
                             },
                             icon: Icon(
                               cart.drugs.contains(drugs[index])

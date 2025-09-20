@@ -13,6 +13,7 @@ class CheckoutPage extends StatefulWidget {
 
 class _CheckoutPageState extends State<CheckoutPage> {
   int _total = 0;
+  int _discount = 0;
   int _payment = 0;
   int _charge = 0;
 
@@ -46,6 +47,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                     itemBuilder: (BuildContext context, int index) {
                       final drug = cart.carts[index].drug;
                       final quantity = cart.carts[index].quantity;
+                      final discount = cart.carts[index].discount;
 
                       return Card.filled(
                         shape: RoundedRectangleBorder(
@@ -66,19 +68,49 @@ class _CheckoutPageState extends State<CheckoutPage> {
                           subtitle: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
+                              discount == 0
+                                  ? Text(
+                                      NumberFormat.currency(
+                                        locale: 'id_ID',
+                                        symbol: 'Rp ',
+                                        decimalDigits: 0,
+                                      ).format(cart.drugs[index].price),
+                                    )
+                                  : Row(
+                                      children: [
+                                        Text(
+                                          NumberFormat.currency(
+                                            locale: 'id_ID',
+                                            symbol: 'Rp ',
+                                            decimalDigits: 0,
+                                          ).format(
+                                            cart.drugs[index].price - discount,
+                                          ),
+                                        ),
+                                        SizedBox(width: 8.0),
+                                        Text(
+                                          NumberFormat.currency(
+                                            locale: 'id_ID',
+                                            symbol: 'Rp ',
+                                            decimalDigits: 0,
+                                          ).format(cart.drugs[index].price),
+                                          style: TextStyle(
+                                            color: Colors.grey[500],
+                                            decoration:
+                                                TextDecoration.lineThrough,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                               Text(
                                 NumberFormat.currency(
                                   locale: 'id_ID',
                                   symbol: 'Rp ',
                                   decimalDigits: 0,
-                                ).format(cart.drugs[index].price),
-                              ),
-                              Text(
-                                NumberFormat.currency(
-                                  locale: 'id_ID',
-                                  symbol: 'Rp ',
-                                  decimalDigits: 0,
-                                ).format(cart.drugs[index].price * quantity),
+                                ).format(
+                                  cart.drugs[index].price * quantity -
+                                      discount * quantity,
+                                ),
                                 style: TextStyle(fontWeight: FontWeight.bold),
                               ),
                             ],
@@ -122,6 +154,45 @@ class _CheckoutPageState extends State<CheckoutPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
+                          "Discount: ",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
+                        ),
+                        SizedBox(width: 20),
+                        Expanded(
+                          child: TextFormField(
+                            keyboardType: TextInputType.number,
+                            textAlign: TextAlign.end,
+                            decoration: InputDecoration(
+                              fillColor: Colors.white,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            initialValue: "0",
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly,
+                            ],
+                            onChanged: (value) {
+                              if (value.isNotEmpty) {
+                                setState(() {
+                                  _discount = int.parse(value);
+                                  _charge = _payment + _discount - _total;
+                                  _isValid = (_payment >= 0 && _charge >= 0);
+                                });
+                              }
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
                           "Payment: ",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
@@ -147,7 +218,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                               if (value.isNotEmpty) {
                                 setState(() {
                                   _payment = int.parse(value);
-                                  _charge = _payment - _total;
+                                  _charge = _payment + _discount - _total;
                                   _isValid = (_payment >= 0 && _charge >= 0);
                                 });
                               }

@@ -12,11 +12,16 @@ class CartProvider extends ChangeNotifier {
       UnmodifiableListView(_carts.map((item) => item.drug));
 
   int get totalItem => _carts.length;
-  int get totalItemPrice =>
-      _carts.fold(0, (sum, item) => sum + (item.quantity * item.drug.price));
+  int get totalItemPrice => _carts.fold(
+    0,
+    (sum, item) =>
+        sum +
+        (item.quantity * item.drug.price) -
+        (item.quantity * item.discount),
+  );
 
-  void add(Drug drug) {
-    _carts.add(Cart(drug: drug));
+  void add(Drug drug, int discount) {
+    _carts.add(Cart(drug: drug, discount: discount));
     notifyListeners();
   }
 

@@ -20,7 +20,12 @@ class DetailHistoryPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Checkout", style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(
+          "10:30 - Saturday, 20 April 2025",
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold),
+        ),
         centerTitle: true,
         backgroundColor: theme.colorScheme.primary,
         foregroundColor: theme.colorScheme.onPrimary,
@@ -105,6 +110,30 @@ class DetailHistoryPage extends StatelessWidget {
                         symbol: 'Rp ',
                         decimalDigits: 0,
                       ).format(20000),
+                    ),
+                  ],
+                ),
+                SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Discount: ",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                    Text(
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                      NumberFormat.currency(
+                        locale: 'id_ID',
+                        symbol: 'Rp ',
+                        decimalDigits: 0,
+                      ).format(0),
                     ),
                   ],
                 ),

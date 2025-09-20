@@ -95,7 +95,7 @@ class _HistoryPageState extends State<HistoryPage> {
                         ),
                         color: Colors.white,
                         child: ListTile(
-                          title: Text("Saturday, 20 April 2025"),
+                          title: Text("15:30 - Saturday, 20 April 2025"),
                           subtitle: Text(
                             NumberFormat.currency(
                               locale: 'id_ID',
