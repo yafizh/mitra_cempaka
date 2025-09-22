@@ -20,6 +20,31 @@ class _LoginPageState extends State<LoginPage> {
 
   String _error = '';
 
+  void _login() async {
+    if (_formGlobalKey.currentState!.validate()) {
+      final navigator = Navigator.of(context);
+      _formGlobalKey.currentState!.save();
+
+      setState(() {
+        _isLoading = true;
+        _error = "";
+      });
+
+      await Future.delayed(Duration(seconds: 3));
+      if (_username == 'admin' && _password == 'admin') {
+        AuthPreferences.setLoggedIn(true);
+        navigator.pushReplacement(
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
+      } else {
+        setState(() {
+          _isLoading = false;
+          _error = "Incorrect username or password";
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -109,40 +134,18 @@ class _LoginPageState extends State<LoginPage> {
                       _password = value!;
                     },
                   ),
-                  SizedBox(height: 30),
+                  SizedBox(height: 20),
                   FilledButton(
-                    onPressed: () async {
-                      if (_formGlobalKey.currentState!.validate()) {
-                        _formGlobalKey.currentState!.save();
-
-                        setState(() => _isLoading = true);
-
-                        await Future.delayed(Duration(seconds: 3));
-                        if (_username == 'admin' && _password == 'admin') {
-                          setState(() {
-                            _error = "";
-                          });
-                          AuthPreferences.setLoggedIn(true);
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (context) => HomePage()),
-                          );
-                        } else {
-                          setState(() {
-                            _error = "Incorrect username or password";
-                          });
-                        }
-                      }
-
-                      setState(() {
-                        _isLoading = false;
-                      });
-                    },
+                    onPressed: _login,
                     style: FilledButton.styleFrom(
-                      minimumSize: Size.fromHeight(50),
+                      minimumSize: Size.fromHeight(48),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(4),
+                        borderRadius: BorderRadius.circular(8),
                       ),
+                      backgroundColor: theme.colorScheme.primary.withValues(
+                        alpha: _isLoading ? 0.6 : 1,
+                      ),
+                      splashFactory: _isLoading ? NoSplash.splashFactory : null,
                     ),
                     child: _isLoading
                         ? SizedBox(

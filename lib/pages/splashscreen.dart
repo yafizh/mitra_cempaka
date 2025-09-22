@@ -11,16 +11,16 @@ class Splashscreen extends StatefulWidget {
 }
 
 class _SplashscreenState extends State<Splashscreen> {
-  _checkLogin() async {
-    await Future.delayed(Duration(seconds: 3));
+  void _checkLogin() async {
+    final navigator = Navigator.of(context);
+
     final page = (await AuthPreferences.isLoggedIn())
         ? HomePage()
         : LoginPage();
 
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => page),
-    );
+    await Future.delayed(Duration(seconds: 3));
+
+    navigator.pushReplacement(MaterialPageRoute(builder: (context) => page));
   }
 
   @override

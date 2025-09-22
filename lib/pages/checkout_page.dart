@@ -23,6 +23,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final navigator = Navigator.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -258,8 +259,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                           setState(() => _isLoading = true);
 
                           await Future.delayed(Duration(seconds: 3));
-                          Navigator.of(context).pop();
-                          Navigator.of(context).pop();
+                          navigator.pop();
+                          navigator.pop();
                           cart.removeAll();
                         }
                       },

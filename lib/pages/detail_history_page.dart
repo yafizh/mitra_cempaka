@@ -6,7 +6,7 @@ import 'package:mitra_cempaka/models/drug.dart';
 
 class DetailHistoryPage extends StatelessWidget {
   final int id;
-  List<Drug> drugs = [];
+  final List<Drug> drugs = [];
 
   DetailHistoryPage({super.key, required this.id});
 
