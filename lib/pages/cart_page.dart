@@ -13,7 +13,7 @@ class CartPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Cart", style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text("Keranjang", style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
         backgroundColor: theme.colorScheme.primary,
         foregroundColor: theme.colorScheme.onPrimary,
@@ -22,7 +22,7 @@ class CartPage extends StatelessWidget {
       body: Consumer<CartProvider>(
         builder: (context, cart, child) {
           return cart.totalItem == 0
-              ? Center(child: Text("Cart is empty"))
+              ? Center(child: Text("Keranjang Kosong"))
               : Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,

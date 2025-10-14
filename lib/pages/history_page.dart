@@ -64,7 +64,7 @@ class _HistoryPageState extends State<HistoryPage> {
           appBar: AppBar(
             backgroundColor: theme.colorScheme.primary,
             title: Text(
-              "History",
+              "Riwayat Penjualan",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: theme.colorScheme.onPrimary,

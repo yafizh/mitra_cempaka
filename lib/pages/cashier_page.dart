@@ -65,7 +65,7 @@ class _CashierPageState extends State<CashierPage> {
           appBar: AppBar(
             backgroundColor: theme.colorScheme.primary,
             title: Text(
-              "Cashier",
+              "Kasir",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 color: theme.colorScheme.onPrimary,
@@ -101,7 +101,7 @@ class _CashierPageState extends State<CashierPage> {
                       filled: true,
                       fillColor: Colors.white,
                       contentPadding: const EdgeInsets.all(15),
-                      hintText: 'Search Item',
+                      hintText: 'Cari Item',
                       hintStyle: const TextStyle(
                         color: Colors.grey,
                         fontSize: 14,

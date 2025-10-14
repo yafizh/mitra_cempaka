@@ -10,7 +10,7 @@ class SettingPage extends StatelessWidget {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text("Profile", style: TextStyle(fontWeight: FontWeight.bold)),
+        title: Text("Profil", style: TextStyle(fontWeight: FontWeight.bold)),
         centerTitle: true,
         backgroundColor: theme.colorScheme.primary,
         foregroundColor: Colors.white,
@@ -55,7 +55,7 @@ class SettingPage extends StatelessWidget {
                 children: [
                   Icon(Icons.settings, size: 25),
                   SizedBox(width: 16),
-                  Expanded(child: Text("Change Password")),
+                  Expanded(child: Text("Ganti Password")),
                   Icon(Icons.chevron_right_rounded, size: 40),
                 ],
               ),

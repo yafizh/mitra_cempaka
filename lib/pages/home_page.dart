@@ -12,9 +12,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final List<Map<String, dynamic>> _pages = [
-    {"page": CashierPage(), "label": "Cashier", "icon": Icons.point_of_sale},
-    {"page": HistoryPage(), "label": "History", "icon": Icons.receipt_long},
-    {"page": SettingPage(), "label": "Profile", "icon": Icons.person},
+    {"page": CashierPage(), "label": "Kasir", "icon": Icons.point_of_sale},
+    {
+      "page": HistoryPage(),
+      "label": "Riwayat Penjualan",
+      "icon": Icons.receipt_long,
+    },
+    {"page": SettingPage(), "label": "Profil", "icon": Icons.person},
   ];
   int _currentIndex = 0;
 

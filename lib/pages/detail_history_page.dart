@@ -93,7 +93,7 @@ class DetailHistoryPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Total: ",
+                      "Total",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -117,7 +117,7 @@ class DetailHistoryPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Discount: ",
+                      "Diskon",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -141,7 +141,7 @@ class DetailHistoryPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Payment: ",
+                      "Pembayaran",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -165,7 +165,7 @@ class DetailHistoryPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Charge: ",
+                      "Kembalian",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
