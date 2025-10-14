@@ -183,8 +183,8 @@ class _CashierPageState extends State<CashierPage> {
                                                   BorderRadius.circular(8),
                                             ),
                                             label: Text("Discount"),
+                                            hintText: '0'
                                           ),
-                                          initialValue: "0",
                                           autofocus: true,
                                           inputFormatters: [
                                             FilteringTextInputFormatter

@@ -11,42 +11,31 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final _pages = [CashierPage(), HistoryPage(), SettingPage()];
+  final List<Map<String, dynamic>> _pages = [
+    {"page": CashierPage(), "label": "Cashier", "icon": Icons.point_of_sale},
+    {"page": HistoryPage(), "label": "History", "icon": Icons.receipt_long},
+    {"page": SettingPage(), "label": "Profile", "icon": Icons.person},
+  ];
   int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(
-      body: _pages[_currentIndex],
+      body: _pages.map((page) => page["page"]).elementAt(_currentIndex),
       bottomNavigationBar: NavigationBar(
         backgroundColor: Colors.white,
         indicatorColor: theme.primaryColor.withValues(alpha: 0.2),
         selectedIndex: _currentIndex,
         onDestinationSelected: (i) => setState(() => _currentIndex = i),
-        destinations: [
-          NavigationDestination(
-            icon: Icon(
-              Icons.point_of_sale,
-              color: _currentIndex == 0 ? theme.primaryColor : Colors.grey[500],
-            ),
-            label: 'Cashier',
-          ),
-          NavigationDestination(
-            icon: Icon(
-              Icons.receipt_long,
-              color: _currentIndex == 1 ? theme.primaryColor : Colors.grey[500],
-            ),
-            label: 'History',
-          ),
-          NavigationDestination(
-            icon: Icon(
-              Icons.person,
-              color: _currentIndex == 2 ? theme.primaryColor : Colors.grey[500],
-            ),
-            label: 'Profile',
-          ),
-        ],
+        destinations: _pages
+            .map(
+              (page) => NavigationDestination(
+                icon: Icon(page["icon"]),
+                label: page['label'],
+              ),
+            )
+            .toList(),
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mitra_cempaka/models/drug.dart';
+import 'package:mitra_cempaka/pages/print_page.dart';
 
 class DetailHistoryPage extends StatelessWidget {
   final int id;
@@ -22,9 +23,7 @@ class DetailHistoryPage extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           "10:30 - Saturday, 20 April 2025",
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold),
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         backgroundColor: theme.colorScheme.primary,
@@ -188,7 +187,11 @@ class DetailHistoryPage extends StatelessWidget {
                 SizedBox(height: 16),
                 FilledButton(
                   onPressed: () {
-                    //
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const PrintPage(),
+                      ),
+                    );
                   },
                   style: FilledButton.styleFrom(
                     minimumSize: Size.fromHeight(48),
