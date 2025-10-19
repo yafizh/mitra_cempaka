@@ -32,17 +32,17 @@ class _CashierPageState extends State<CashierPage> {
     }
 
     _scrollController.addListener(() async {
-      if (_scrollController.position.pixels ==
+      if (_scrollController.position.pixels >=
           _scrollController.position.maxScrollExtent) {
         if (_page < _totalPage) {
           _page += 1;
           await Future.delayed(Duration(seconds: 3));
-          final temp = [];
+          final List<Drug> temp = [];
           for (int i = drugs.length + 1; i <= (20 * _page); i++) {
             temp.add(Drug("Obat $i", Random().nextInt(100) + 10000));
           }
           setState(() {
-            drugs = [...drugs, ...temp];
+            drugs.addAll(temp);
           });
         }
       }
@@ -139,7 +139,7 @@ class _CashierPageState extends State<CashierPage> {
                     itemBuilder: (BuildContext context, int index) {
                       if (index == drugs.length) {
                         return Padding(
-                          padding: EdgeInsetsGeometry.symmetric(vertical: 16),
+                          padding: EdgeInsets.symmetric(vertical: 16),
                           child: Center(child: CircularProgressIndicator()),
                         );
                       }
@@ -164,7 +164,7 @@ class _CashierPageState extends State<CashierPage> {
                               if (cart.drugs.contains(drugs[index])) {
                                 cart.remove(drugs[index]);
                               } else {
-                                int _discount = 0;
+                                int discount = 0;
                                 showDialog<String>(
                                   context: context,
                                   builder: (BuildContext context) =>
@@ -183,15 +183,18 @@ class _CashierPageState extends State<CashierPage> {
                                                   BorderRadius.circular(8),
                                             ),
                                             label: Text("Discount"),
-                                            hintText: '0'
+                                            hintText: '0',
                                           ),
                                           autofocus: true,
                                           inputFormatters: [
                                             FilteringTextInputFormatter
                                                 .digitsOnly,
                                           ],
-                                          onChanged: (value) =>
-                                              _discount = int.parse(value),
+                                          onChanged: (value) {
+                                            discount = value.isEmpty
+                                                ? 0
+                                                : int.parse(value);
+                                          },
                                         ),
                                         actionsAlignment:
                                             MainAxisAlignment.spaceBetween,
@@ -205,7 +208,7 @@ class _CashierPageState extends State<CashierPage> {
                                           ),
                                           TextButton(
                                             onPressed: () {
-                                              cart.add(drugs[index], _discount);
+                                              cart.add(drugs[index], discount);
                                               Navigator.pop(context);
                                             },
                                             child: const Text('Add'),
