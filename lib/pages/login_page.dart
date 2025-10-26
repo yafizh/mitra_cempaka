@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:mitra_cempaka/pages/home_page.dart';
+import 'package:mitra_cempaka/services/api/MitraCempakaApi.dart';
 import 'package:mitra_cempaka/services/storage/auth_preferences.dart';
 
 class LoginPage extends StatefulWidget {
@@ -30,16 +33,31 @@ class _LoginPageState extends State<LoginPage> {
         _error = "";
       });
 
-      await Future.delayed(Duration(seconds: 3));
-      if (_username == 'admin' && _password == 'admin') {
-        AuthPreferences.setLoggedIn(true);
+      var response = await MitraCempakaApi.login(_username, _password);
+      if (response.statusCode == 200) {
+        var responseBody = jsonDecode(response.body);
+        AuthPreferences.setLoggedIn(
+          responseBody['user']['username'],
+          responseBody['access_token'],
+        );
         navigator.pushReplacement(
           MaterialPageRoute(builder: (context) => HomePage()),
         );
-      } else {
+        return;
+      }
+
+      if (response.statusCode == 401) {
         setState(() {
           _isLoading = false;
-          _error = "Incorrect username or password";
+          _error = jsonDecode(response.body)['message'];
+        });
+        return;
+      }
+
+      if (response.statusCode == 500) {
+        setState(() {
+          _isLoading = false;
+          _error = "Server Error";
         });
       }
     }

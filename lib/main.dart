@@ -2,8 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:mitra_cempaka/pages/splashscreen.dart';
 import 'package:mitra_cempaka/services/provider/cart_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting('id_ID', null);
+
   runApp(
     ChangeNotifierProvider(
       create: (context) => CartProvider(),

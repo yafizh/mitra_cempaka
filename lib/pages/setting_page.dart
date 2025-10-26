@@ -2,8 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:mitra_cempaka/pages/login_page.dart';
 import 'package:mitra_cempaka/services/storage/auth_preferences.dart';
 
-class SettingPage extends StatelessWidget {
+class SettingPage extends StatefulWidget {
   const SettingPage({super.key});
+
+  @override
+  State<SettingPage> createState() => _SettingPageState();
+}
+
+class _SettingPageState extends State<SettingPage> {
+  String _username = '-';
+
+  Future<void> getUsername() async {
+    final username = await AuthPreferences.getUsername();
+    setState(() => _username = username);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUsername();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +47,7 @@ class SettingPage extends StatelessWidget {
                   Icon(Icons.account_circle, size: 140),
                   SizedBox(height: 20),
                   Text(
-                    'Nursahid Arya Suyudi',
+                    _username,
                     style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -63,7 +81,7 @@ class SettingPage extends StatelessWidget {
             SizedBox(height: 8),
             FilledButton.tonal(
               onPressed: () {
-                AuthPreferences.setLoggedIn(false);
+                AuthPreferences.setLoggedOut();
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => const LoginPage()),

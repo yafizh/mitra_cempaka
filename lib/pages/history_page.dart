@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mitra_cempaka/models/drug.dart';
 import 'package:mitra_cempaka/pages/detail_history_page.dart';
+import 'package:mitra_cempaka/services/api/MitraCempakaApi.dart';
 import 'package:mitra_cempaka/services/provider/cart_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -14,44 +16,34 @@ class HistoryPage extends StatefulWidget {
 }
 
 class _HistoryPageState extends State<HistoryPage> {
-  List<Drug> drugs = [];
+  List<dynamic> histories = [];
+  bool loading = true;
 
-  final ScrollController _scrollController = ScrollController();
-
-  int _page = 1;
-
-  int _totalPage = 3;
+  _getHistory() async {
+    var response = await MitraCempakaApi.getHistory();
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var responseBody = jsonDecode(response.body);
+      setState(() {
+        histories = (responseBody['data'] as List).map((history) {
+          final parsed = DateFormat(
+            'yyyy-MM-dd HH:mm',
+          ).parse(history['created_at'], false).toLocal();
+          final createdAt = DateFormat(
+            'HH:mm - dd MMMM yyyy',
+            'id_ID',
+          ).format(parsed);
+          return {'createdAt': createdAt, 'total': history['total']};
+        }).toList();
+        loading = false;
+      });
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-
-    for (int i = 1; i <= 20; i++) {
-      drugs.add(Drug("Obat $i", Random().nextInt(100) + 10000));
-    }
-
-    _scrollController.addListener(() async {
-      if (_scrollController.position.pixels ==
-          _scrollController.position.maxScrollExtent) {
-        if (_page < _totalPage) {
-          _page += 1;
-          await Future.delayed(Duration(seconds: 3));
-          final temp = [];
-          for (int i = drugs.length + 1; i <= (20 * _page); i++) {
-            temp.add(Drug("Obat $i", Random().nextInt(100) + 10000));
-          }
-          setState(() {
-            drugs = [...drugs, ...temp];
-          });
-        }
-      }
-    });
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
+    _getHistory();
   }
 
   @override
@@ -78,49 +70,46 @@ class _HistoryPageState extends State<HistoryPage> {
             child: Column(
               children: [
                 Expanded(
-                  child: ListView.builder(
-                    controller: _scrollController,
-                    itemCount: (drugs.length + (_page == _totalPage ? 0 : 1)),
-                    itemBuilder: (BuildContext context, int index) {
-                      if (index == drugs.length) {
-                        return Padding(
+                  child: loading
+                      ? Padding(
                           padding: EdgeInsetsGeometry.symmetric(vertical: 16),
                           child: Center(child: CircularProgressIndicator()),
-                        );
-                      }
-
-                      return Card.filled(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                        color: Colors.white,
-                        child: ListTile(
-                          title: Text("15:30 - Saturday, 20 April 2025"),
-                          subtitle: Text(
-                            NumberFormat.currency(
-                              locale: 'id_ID',
-                              symbol: 'Rp ',
-                              decimalDigits: 0,
-                            ).format(drugs[index].price),
-                          ),
-                          trailing: IconButton(
-                            onPressed: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) =>
-                                      DetailHistoryPage(id: 1),
+                        )
+                      : ListView.builder(
+                          itemCount: histories.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return Card.filled(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              color: Colors.white,
+                              child: ListTile(
+                                title: Text(histories[index]['createdAt']),
+                                subtitle: Text(
+                                  NumberFormat.currency(
+                                    locale: 'id_ID',
+                                    symbol: 'Rp ',
+                                    decimalDigits: 0,
+                                  ).format(histories[index]['total']),
                                 ),
-                              );
-                            },
-                            icon: Icon(
-                              Icons.remove_red_eye,
-                              color: Colors.lightBlueAccent,
-                            ),
-                          ),
+                                trailing: IconButton(
+                                  onPressed: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            DetailHistoryPage(id: 1),
+                                      ),
+                                    );
+                                  },
+                                  icon: Icon(
+                                    Icons.remove_red_eye,
+                                    color: Colors.lightBlueAccent,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
                         ),
-                      );
-                    },
-                  ),
                 ),
               ],
             ),
