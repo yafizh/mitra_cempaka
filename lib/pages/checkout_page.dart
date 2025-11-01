@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:mitra_cempaka/main.dart';
 import 'package:mitra_cempaka/services/provider/cart_provider.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +24,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final navigator = Navigator.of(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -259,9 +259,10 @@ class _CheckoutPageState extends State<CheckoutPage> {
                           setState(() => _isLoading = true);
 
                           await Future.delayed(Duration(seconds: 3));
-                          navigator.pop();
-                          navigator.pop();
+
                           cart.removeAll();
+                          AppNavigator.key.currentState?.pop();
+                          AppNavigator.key.currentState?.pop();
                         }
                       },
                       style: FilledButton.styleFrom(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mitra_cempaka/main.dart';
 import 'package:mitra_cempaka/pages/login_page.dart';
 import 'package:mitra_cempaka/services/storage/auth_preferences.dart';
 
@@ -82,9 +83,9 @@ class _SettingPageState extends State<SettingPage> {
             FilledButton.tonal(
               onPressed: () {
                 AuthPreferences.setLoggedOut();
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const LoginPage()),
+                AppNavigator.key.currentState?.pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => LoginPage()),
+                  (route) => false,
                 );
               },
               style: FilledButton.styleFrom(

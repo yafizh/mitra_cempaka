@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mitra_cempaka/main.dart';
 import 'package:mitra_cempaka/models/drug.dart';
 import 'package:mitra_cempaka/pages/detail_history_page.dart';
 import 'package:mitra_cempaka/services/api/mitra_cempaka_api.dart';
@@ -94,7 +95,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                 ),
                                 trailing: IconButton(
                                   onPressed: () {
-                                    Navigator.of(context).push(
+                                    AppNavigator.key.currentState?.push(
                                       MaterialPageRoute(
                                         builder: (context) =>
                                             DetailHistoryPage(id: 1),

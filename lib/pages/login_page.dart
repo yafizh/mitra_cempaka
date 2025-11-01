@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:mitra_cempaka/main.dart';
 import 'package:mitra_cempaka/pages/home_page.dart';
 import 'package:mitra_cempaka/services/api/mitra_cempaka_api.dart';
 import 'package:mitra_cempaka/services/storage/auth_preferences.dart';
@@ -25,7 +26,6 @@ class _LoginPageState extends State<LoginPage> {
 
   void _login() async {
     if (_formGlobalKey.currentState!.validate()) {
-      final navigator = Navigator.of(context);
       _formGlobalKey.currentState!.save();
 
       setState(() {
@@ -40,9 +40,11 @@ class _LoginPageState extends State<LoginPage> {
           responseBody['user']['username'],
           responseBody['access_token'],
         );
-        navigator.pushReplacement(
-          MaterialPageRoute(builder: (context) => HomePage()),
+
+        AppNavigator.key.currentState?.pushReplacement(
+          MaterialPageRoute(builder: (context) => LoginPage()),
         );
+
         return;
       }
 

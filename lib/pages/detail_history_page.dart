@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:mitra_cempaka/main.dart';
 import 'package:mitra_cempaka/models/drug.dart';
 import 'package:mitra_cempaka/pages/print_page.dart';
 
@@ -187,7 +188,7 @@ class DetailHistoryPage extends StatelessWidget {
                 SizedBox(height: 16),
                 FilledButton(
                   onPressed: () {
-                    Navigator.of(context).push(
+                    AppNavigator.key.currentState?.push(
                       MaterialPageRoute(
                         builder: (context) => const PrintPage(),
                       ),
