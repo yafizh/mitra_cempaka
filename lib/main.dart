@@ -35,6 +35,11 @@ class MyApp extends StatelessWidget {
       ),
       home: Splashscreen(),
       debugShowCheckedModeBanner: false,
+      navigatorKey: AppNavigator.key,
     );
   }
+}
+
+class AppNavigator {
+  static final key = GlobalKey<NavigatorState>();
 }
