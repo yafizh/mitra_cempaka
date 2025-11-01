@@ -16,6 +16,7 @@ class MitraCempakaApi {
   }
 
   static void _handleError() {
+    AuthPreferences.setLoggedOut();
     AppNavigator.key.currentState?.pushAndRemoveUntil(
       MaterialPageRoute(builder: (context) => LoginPage()),
       (route) => false,
