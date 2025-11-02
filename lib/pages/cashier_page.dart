@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -19,6 +18,8 @@ class CashierPage extends StatefulWidget {
 
 class _CashierPageState extends State<CashierPage> {
   List<Drug> drugs = [];
+  List<Drug> filteredDrug = [];
+
   bool loading = true;
 
   _getDrug() async {
@@ -30,6 +31,7 @@ class _CashierPageState extends State<CashierPage> {
         drugs = (responseBody['data']['obat'] as List)
             .map((drug) => Drug(drug['nama'], drug['harga_jual']))
             .toList();
+        filteredDrug = drugs;
         loading = false;
       });
     }
@@ -83,6 +85,13 @@ class _CashierPageState extends State<CashierPage> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        filteredDrug = drugs
+                            .where((Drug drug) => drug.name.contains(value))
+                            .toList();
+                      });
+                    },
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
@@ -120,12 +129,11 @@ class _CashierPageState extends State<CashierPage> {
                 ),
                 Expanded(
                   child: loading
-                      ? Padding(
-                          padding: EdgeInsets.symmetric(vertical: 16),
-                          child: Center(child: CircularProgressIndicator()),
-                        )
+                      ? Center(child: CircularProgressIndicator())
+                      : filteredDrug.isEmpty
+                      ? Center(child: Text('Data Tidak Terseida'))
                       : ListView.builder(
-                          itemCount: drugs.length,
+                          itemCount: filteredDrug.length,
                           itemBuilder: (BuildContext context, int index) {
                             return Card.filled(
                               shape: RoundedRectangleBorder(
@@ -133,19 +141,21 @@ class _CashierPageState extends State<CashierPage> {
                               ),
                               color: Colors.white,
                               child: ListTile(
-                                title: Text(drugs[index].name),
+                                title: Text(filteredDrug[index].name),
                                 subtitle: Text(
                                   NumberFormat.currency(
                                     locale: 'id_ID',
                                     symbol: 'Rp ',
                                     decimalDigits: 0,
-                                  ).format(drugs[index].price),
+                                  ).format(filteredDrug[index].price),
                                 ),
                                 trailing: IconButton(
                                   color: theme.colorScheme.primary,
                                   onPressed: () {
-                                    if (cart.drugs.contains(drugs[index])) {
-                                      cart.remove(drugs[index]);
+                                    if (cart.drugs.contains(
+                                      filteredDrug[index],
+                                    )) {
+                                      cart.remove(filteredDrug[index]);
                                     } else {
                                       int discount = 0;
                                       showDialog<String>(
@@ -197,7 +207,7 @@ class _CashierPageState extends State<CashierPage> {
                                                 TextButton(
                                                   onPressed: () {
                                                     cart.add(
-                                                      drugs[index],
+                                                      filteredDrug[index],
                                                       discount,
                                                     );
                                                     Navigator.pop(context);
@@ -210,7 +220,7 @@ class _CashierPageState extends State<CashierPage> {
                                     }
                                   },
                                   icon: Icon(
-                                    cart.drugs.contains(drugs[index])
+                                    cart.drugs.contains(filteredDrug[index])
                                         ? Icons.remove_shopping_cart_sharp
                                         : Icons.add_shopping_cart_sharp,
                                   ),

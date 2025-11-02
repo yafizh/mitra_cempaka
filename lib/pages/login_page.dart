@@ -42,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
         );
 
         AppNavigator.key.currentState?.pushReplacement(
-          MaterialPageRoute(builder: (context) => LoginPage()),
+          MaterialPageRoute(builder: (context) => HomePage()),
         );
 
         return;
