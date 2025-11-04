@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mitra_cempaka/main.dart';
+import 'package:mitra_cempaka/pages/change_password_page.dart';
 import 'package:mitra_cempaka/pages/login_page.dart';
 import 'package:mitra_cempaka/services/storage/auth_preferences.dart';
 
@@ -57,7 +58,9 @@ class _SettingPageState extends State<SettingPage> {
             SizedBox(height: 8),
             FilledButton.tonal(
               onPressed: () {
-                //
+                AppNavigator.key.currentState?.push(
+                  MaterialPageRoute(builder: (context) => ChangePasswordPage()),
+                );
               },
               style: FilledButton.styleFrom(
                 minimumSize: Size.fromHeight(60),

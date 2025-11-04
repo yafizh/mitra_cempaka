@@ -107,7 +107,6 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 children: [
                   TextFormField(
-                    onTap: () {},
                     decoration: const InputDecoration(
                       prefixIcon: Icon(Icons.person),
                       border: OutlineInputBorder(),
@@ -126,7 +125,6 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   SizedBox(height: 20),
                   TextFormField(
-                    onTap: () {},
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.password),
                       suffixIcon: IconButton(
